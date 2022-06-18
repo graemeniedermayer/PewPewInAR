@@ -26,7 +26,7 @@ export const xwing_controller = (() => {
         return;
       }
       this.life_ = Math.max(0.0, this.life_ - timeElapsed);
-      this.light_.intensity = 20.0 * (this.life_ / this.maxLife_);
+      this.light_.intensity = 2.0 * (this.life_ / this.maxLife_);
     }
 
     AddParticles(num) {
@@ -44,7 +44,7 @@ export const xwing_controller = (() => {
       const d = new THREE.Vector3(0, 0, 0);
 
       // DEMO
-      this.light_ = new THREE.PointLight(0xFF8080, 20.0, 20.0, 2.0);
+      this.light_ = new THREE.PointLight(0xFF8080, 2.0, 2.0, 2.0);
       this.light_.position.copy(origin);
       this.life_ = life;
       this.maxLife_ = life;
@@ -73,10 +73,10 @@ export const xwing_controller = (() => {
       this.cooldownRate_ = 0.075;
       this.powerLevel_ = 0.0;
 
-      const x = 2.35 * 4;
-      const y1 = 1.95 * 4;
-      const y2 = -0.5 * 4;
-      const z = 0.65 * 4;
+      const x = 2.35 * .04;
+      const y1 = 1.95 * .04;
+      const y2 = -0.5 * .04;
+      const z = 0.65 * .04;
       this.offsets_ = [
           new THREE.Vector3(-x, y1, -z),
           new THREE.Vector3(x, y1, -z),
@@ -104,13 +104,13 @@ export const xwing_controller = (() => {
       this.blasterFX_ = new particle_system.ParticleSystem({
           camera: this.params_.camera,
           parent: group,
-          texture: './resources/textures/fx/blaster.jpg',
+          texture: './resources/textures/fx/blaster.jpg'.replace('./','/static/'),
       });
 
       this.spotlight_ = new THREE.SpotLight(
-          0xFFFFFF, 5.0, 200, Math.PI / 2, 0.5);
-      this.spotlight_.position.set(0, 0, -5);
-      this.spotlight_.target.position.set(0, 0, -6);
+          0xFFFFFF, 0.050, 2, Math.PI / 2, 0.5);
+      this.spotlight_.position.set(0, 0, -0.05);
+      this.spotlight_.target.position.set(0, 0, -0.06);
 
       group.add(this.spotlight_);
       group.add(this.spotlight_.target);
@@ -155,13 +155,13 @@ export const xwing_controller = (() => {
       p1.Start.applyQuaternion(this.Parent.Quaternion);
       p1.Start.add(this.Parent.Position);
       p1.End = p1.Start.clone();
-      p1.Velocity = this.Parent.Forward.clone().multiplyScalar(2000.0);
-      p1.Length = 50.0;
+      p1.Velocity = this.Parent.Forward.clone().multiplyScalar(20.0);
+      p1.Length = 0.50;
       p1.Colours = [
           new THREE.Color(4.0, 0.5, 0.5), new THREE.Color(0.0, 0.0, 0.0)];
       p1.Life = 5.0;
       p1.TotalLife = 5.0;
-      p1.Width = 2.5;
+      p1.Width = 0.0025;
 
       const loader = this.FindEntity('loader').GetComponent('LoadController');
       loader.LoadSound('./resources/sounds/', 'laser.ogg', (s) => {

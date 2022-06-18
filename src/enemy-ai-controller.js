@@ -11,7 +11,7 @@ export const enemy_ai_controller = (() => {
   const _COLLISION_FORCE = 25;
   const _WANDER_FORCE = 1;
   const _ATTACK_FORCE = 25;
-  const _MAX_TARGET_DISTANCE = 1500;
+  const _MAX_TARGET_DISTANCE = 15;
   const _MAX_ANGLE = 0.9;
 
   const _TMP_M0 = new THREE.Matrix4();
@@ -26,10 +26,10 @@ export const enemy_ai_controller = (() => {
     }
   
     Init_() {
-      this.maxSteeringForce_ = 30;
-      this.maxSpeed_  = 100;
-      this.acceleration_ = 10;
-      this.velocity_ = new THREE.Vector3(0, 0, -1);
+      this.maxSteeringForce_ = 3;
+      this.maxSpeed_  = 0.3;
+      this.acceleration_ = 1;
+      this.velocity_ = new THREE.Vector3(0, 0, -0.01);
       this.wanderAngle_ = 0.0;
       this.quaternion_ = new THREE.Quaternion();
       this.target_ = null;
@@ -44,8 +44,8 @@ export const enemy_ai_controller = (() => {
       // });
   
       // const alignmentVelocity = this._ApplyAlignment(allies);
-      const originVelocity = this.ApplySeek_(
-          this.FindEntity('star-destroyer'));
+      // const originVelocity = this.ApplySeek_(
+      //     this.FindEntity('star-destroyer'));
       const wanderVelocity = this.ApplyWander_();
       const collisionVelocity = this.ApplyCollisionAvoidance_();
       const attackVelocity = this.ApplyAttack_();
@@ -54,7 +54,7 @@ export const enemy_ai_controller = (() => {
       // steeringForce.add(separationVelocity);
       // steeringForce.add(alignmentVelocity);
       // steeringForce.add(cohesionVelocity);
-      steeringForce.add(originVelocity);
+      // steeringForce.add(originVelocity);
       steeringForce.add(wanderVelocity);
       steeringForce.add(collisionVelocity);
       steeringForce.add(attackVelocity);
@@ -125,15 +125,15 @@ export const enemy_ai_controller = (() => {
   
     ApplyCollisionAvoidance_() {
       const pos = this.Parent.Position;
-      const colliders = this.grid_.FindNear([pos.x, pos.z], [500, 500]).filter(
+      const colliders = this.grid_.FindNear([pos.x, pos.z], [5, 5]).filter(
           c => c.entity.ID != this.Parent.ID
       );
   
       // Hardcoded is best
-      const starDestroyer = this.FindEntity('star-destroyer');
-      if (starDestroyer.Attributes.roughRadius) {
-        colliders.push({entity: starDestroyer});
-      }
+      // const starDestroyer = this.FindEntity('star-destroyer');
+      // if (starDestroyer.Attributes.roughRadius) {
+      //   colliders.push({entity: starDestroyer});
+      // }
 
       const force = new THREE.Vector3(0, 0, 0);
   
@@ -142,13 +142,13 @@ export const enemy_ai_controller = (() => {
         const entityRadius = c.entity.Attributes.roughRadius;
         const dist = entityPos.distanceTo(pos);
 
-        if (dist > (entityRadius + 500)) {
+        if (dist > (entityRadius + 5)) {
           continue;
         }
 
         const directionFromEntity = _TMP_V3_0.subVectors(
             pos, entityPos);
-        const multiplier = (entityRadius + this.Parent.Attributes.roughRadius) / Math.max(1, (dist - 200));
+        const multiplier = (entityRadius + this.Parent.Attributes.roughRadius) / Math.max(1, (dist - 2));
         directionFromEntity.normalize();
         directionFromEntity.multiplyScalar(multiplier * _COLLISION_FORCE);
         force.add(directionFromEntity);
@@ -164,7 +164,7 @@ export const enemy_ai_controller = (() => {
           0,
           Math.sin(this.wanderAngle_));
       const pointAhead = this.Parent.Forward.clone();
-      pointAhead.multiplyScalar(20);
+      pointAhead.multiplyScalar(.2);
       pointAhead.add(randomPointOnCircle);
       pointAhead.normalize();
       return pointAhead.multiplyScalar(_WANDER_FORCE);
@@ -188,7 +188,7 @@ export const enemy_ai_controller = (() => {
     AcquireTarget_() {
       const pos = this.Parent.Position;
       const enemies = this.params_.grid.FindNear(
-          [pos.x, pos.z], [1000, 1000]).filter(
+          [pos.x, pos.z], [10, 10]).filter(
           c => c.entity.Attributes.team == 'allies'
       );
 
@@ -219,7 +219,7 @@ export const enemy_ai_controller = (() => {
       direction.normalize();
   
       const dist = this.Parent.Position.distanceTo(this.target_.Position);
-      const falloff = math.sat(dist / 200);
+      const falloff = math.sat(dist / 2);
 
       const forceVector = direction.multiplyScalar(_ATTACK_FORCE * falloff);
       return forceVector;

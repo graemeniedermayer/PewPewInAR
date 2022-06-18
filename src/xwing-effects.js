@@ -28,11 +28,11 @@ export const xwing_effect = (() => {
       const life = (Math.random() * 0.85 + 0.15) * 0.2;
       const p = origin;
 
-      const d = new THREE.Vector3(0, 0, 10);
+      const d = new THREE.Vector3(0, 0, .5);
 
       return {
           position: p,
-          size: (Math.random() * 0.5 + 0.5) * 1.0,
+          size: (Math.random() * 0.5 + 0.5) * .1,
           colour: new THREE.Color(),
           alpha: 1.0,
           life: life,
@@ -63,13 +63,13 @@ export const xwing_effect = (() => {
       this.blasterFX_ = new particle_system.ParticleSystem({
           camera: this.params_.camera,
           parent: group,
-          texture: './resources/textures/fx/fire.png',
+          texture: './resources/textures/fx/fire.png'.replace('./','/static/'),
       });
 
-      const x = 0.8 * 4;
-      const y1 = 1.65 * 4;
-      const y2 = -0.75 * 4;
-      const z = -2.7 * 4;
+      const x = 0.8 * 0.04;
+      const y1 = 1.65 * .04;
+      const y2 = -0.75 * .04;
+      const z = -2.7 * .04;
       this.offsets_ = [
           new THREE.Vector3(-x, y1, -z),
           new THREE.Vector3(x, y1, -z),

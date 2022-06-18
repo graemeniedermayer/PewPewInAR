@@ -7,9 +7,8 @@ import {spawners} from './spawners.js';
 import {spatial_hash_grid} from './spatial-hash-grid.js';
 import {threejs_component} from './threejs-component.js';
 import {ammojs_component} from './ammojs-component.js';
+import {xr_component} from './webxr-component.js';
 import {blaster} from './fx/blaster.js';
-import {ui_controller} from './ui-controller.js';
-import {crawl_controller} from './crawl-controller.js';
 
 import {math} from './math.js';
 
@@ -29,7 +28,7 @@ class QuickGame2_Sequel {
 
   OnGameStarted_() {
     this.grid_ = new spatial_hash_grid.SpatialHashGrid(
-        [[-5000, -5000], [5000, 5000]], [100, 100]);
+        [[-50, -50], [50, 50]], [1, 1]);
 
     this.LoadControllers_();
 
@@ -60,14 +59,10 @@ class QuickGame2_Sequel {
     fx.AddComponent(new blaster.BlasterSystem({
         scene: this.scene_,
         camera: this.camera_,
-        texture: './resources/textures/fx/blaster.jpg',
+        texture: './resources/textures/fx/blaster.jpg'.replace('./','/static/'),
     }));
     this.entityManager_.Add(fx, 'fx');
 
-    // DEMO
-    const ui = new entity.Entity();
-    ui.AddComponent(new ui_controller.UIController());
-    this.entityManager_.Add(ui, 'ui');
 
     const basicParams = {
       grid: this.grid_,
@@ -75,53 +70,33 @@ class QuickGame2_Sequel {
       camera: this.camera_,
     };
 
-    // DEMO
-    // const crawl = new entity.Entity();
-    // crawl.AddComponent(new crawl_controller.CrawlController(basicParams))
-    // this.entityManager_.Add(crawl);
-
     const spawner = new entity.Entity();
     spawner.AddComponent(new spawners.PlayerSpawner(basicParams));
     spawner.AddComponent(new spawners.TieFighterSpawner(basicParams));
     spawner.AddComponent(new spawners.XWingSpawner(basicParams));
-    spawner.AddComponent(new spawners.StarDestroyerSpawner(basicParams));
-    spawner.AddComponent(new spawners.StarDestroyerTurretSpawner(basicParams));
     spawner.AddComponent(new spawners.ExplosionSpawner(basicParams));
     spawner.AddComponent(new spawners.TinyExplosionSpawner(basicParams));
     spawner.AddComponent(new spawners.ShipSmokeSpawner(basicParams));
     this.entityManager_.Add(spawner, 'spawners');
-
+    for (let i = 0; i < 5; ++i) {
+      const e = spawner.GetComponent('TieFighterSpawner').Spawn();
+      const n = new THREE.Vector3(
+        math.rand_range(-1, 1),
+        math.rand_range(-1, 1),
+        math.rand_range(-1, 1),
+      );
+      n.normalize();
+      n.multiplyScalar(3);
+      n.add(new THREE.Vector3(0, 1, -1));
+      e.SetPosition(n);
+    }
     // DEMO
     spawner.GetComponent('PlayerSpawner').Spawn();
-
-    // DEMO
-    // for (let i = 0; i < 35; ++i) {
-    //   const e = spawner.GetComponent('TieFighterSpawner').Spawn();
-    //   const n = new THREE.Vector3(
-    //     math.rand_range(-1, 1),
-    //     math.rand_range(-1, 1),
-    //     math.rand_range(-1, 1),
-    //   );
-    //   n.normalize();
-    //   n.multiplyScalar(300);
-    //   // n.add(new THREE.Vector3(0, 0, 1000));
-    //   e.SetPosition(n);
-    // }
     
-    // for (let i = 0; i < 6; ++i) {
-    //   const e = spawner.GetComponent('XWingSpawner').Spawn();
-    //   const n = new THREE.Vector3(
-    //     math.rand_range(-1, 1),
-    //     math.rand_range(-1, 1),
-    //     math.rand_range(-1, 1),
-    //   );
-    //   n.normalize();
-    //   n.multiplyScalar(300);
-    //   // n.add(new THREE.Vector3(0, 0, 800));
-    //   e.SetPosition(n);
-    // }
+    const webxr = new entity.Entity();
+    webxr.AddComponent(new  xr_component.XRController(this.threejs_.threejs_, basicParams))
+    this.entityManager_.Add(webxr, 'webxr');
 
-    spawner.GetComponent('StarDestroyerSpawner').Spawn();
   }
 
   RAF_() {
@@ -155,11 +130,13 @@ class QuickGame2_Sequel {
 
 let _APP = null;
 
+// This could be automatic right?
 window.addEventListener('DOMContentLoaded', () => {
   const _Setup = () => {
     Ammo().then(function(AmmoLib) {
       Ammo = AmmoLib;
       _APP = new QuickGame2_Sequel();
+      globalThis._APP = _APP
     }); 
     document.body.removeEventListener('click', _Setup);
   };

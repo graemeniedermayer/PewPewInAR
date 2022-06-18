@@ -56,7 +56,7 @@ export const player_controller = (() => {
       frameDecceleration.multiplyScalar(timeInSeconds);
 
       velocity.add(frameDecceleration);
-      velocity.z = -math.clamp(Math.abs(velocity.z), 50.0, 125.0);
+      velocity.z = -math.clamp(Math.abs(velocity.z), .5, 1.25);
   
       const _PARENT_Q = this.Parent.Quaternion.clone();
       const _PARENT_P = this.Parent.Position.clone();

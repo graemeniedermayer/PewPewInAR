@@ -23,7 +23,37 @@ export const player_input = (() => {
       };
       this.Parent.Attributes.InputPrevious = {
         ...this.Parent.Attributes.InputCurrent};
-
+      // controller = document.getElementById('controller')
+      document.getElementById("up-control").addEventListener('touchstart', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Forward = 1.0;
+      }, false);
+      document.getElementById("down-control").addEventListener('touchstart', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Forward = -1.0;
+      }, false);
+      document.getElementById("left-control").addEventListener('touchstart', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Side = -1.0;
+      }, false);
+      document.getElementById("right-control").addEventListener('touchstart', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Side = 1.0;
+      }, false);
+      document.getElementById("space-control").addEventListener('touchstart', e=>{
+        this.Parent.Attributes.InputCurrent.space = true;
+      }, false);
+      document.getElementById("up-control").addEventListener('touchend', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Forward = 0.0;
+      }, false);
+      document.getElementById("down-control").addEventListener('touchend', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Forward = 0.0;
+      }, false);
+      document.getElementById("left-control").addEventListener('touchend', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Side = 0.0;
+      }, false);
+      document.getElementById("right-control").addEventListener('touchend', e=>{
+        this.Parent.Attributes.InputCurrent.axis1Side = 0.0;
+      }, false);
+      document.getElementById("space-control").addEventListener('touchend', e=>{
+        this.Parent.Attributes.InputCurrent.space = false;
+      }, false);
       document.addEventListener('keydown', (e) => this.OnKeyDown_(e), false);
       document.addEventListener('keyup', (e) => this.OnKeyUp_(e), false);
     }

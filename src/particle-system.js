@@ -138,16 +138,16 @@ export const particle_system = (() => {
       const life = (Math.random() * 0.75 + 0.25) * 5.0;
       return {
           position: new THREE.Vector3(
-              (Math.random() * 2 - 1) * 4.0 + -44,
-              (Math.random() * 2 - 1) * 4.0 + 0,
-              (Math.random() * 2 - 1) * 4.0 + 12),
-          size: (Math.random() * 0.5 + 0.5) * 2.0,
+              (Math.random() * 2 - 1) * .04 + -.44,
+              (Math.random() * 2 - 1) * .04 + 0,
+              (Math.random() * 2 - 1) * .04 + .12),
+          size: (Math.random() * 0.5 + 0.5) * .020,
           colour: new THREE.Color(),
           alpha: 1.0,
           life: life,
           maxLife: life,
           rotation: Math.random() * 2.0 * Math.PI,
-          velocity: new THREE.Vector3(0, 1, 0),
+          velocity: new THREE.Vector3(0, 0.01, 0),
           blend: 0.0,
           drag: 1.0,
       };

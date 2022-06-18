@@ -61,7 +61,7 @@ export const ship_effect = (() => {
       this.particles_ = new particle_system.ParticleSystem({
           camera: this.params_.camera,
           parent: this.params_.scene,
-          texture: './resources/textures/fx/smoke.png',
+          texture: './resources/textures/fx/smoke.png'.replace('./','/static/'),
       });
       this.OnDamaged_();
     }

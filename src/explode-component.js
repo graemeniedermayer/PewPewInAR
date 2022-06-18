@@ -25,7 +25,7 @@ export const explode_component = (() => {
     }
 
     CreateParticle_() {
-      const radius = 1.0;
+      const radius = 0.005;
       const life = (Math.random() * 0.75 + 0.25) * 2.0;
       const p = new THREE.Vector3(
           (Math.random() * 2 - 1) * radius,
@@ -36,11 +36,11 @@ export const explode_component = (() => {
       p.copy(d);
       p.multiplyScalar(radius);
       p.add(this.origin_);
-      d.multiplyScalar(50.0);
+      d.multiplyScalar(.500);
 
       return {
           position: p,
-          size: (Math.random() * 0.5 + 0.5) * 5.0,
+          size: (Math.random() * 0.5 + 0.5) * 2.0,
           colour: new THREE.Color(),
           alpha: 0.0,
           life: life,
@@ -70,7 +70,7 @@ export const explode_component = (() => {
     }
 
     CreateParticle_() {
-      const radius = 1.0;
+      const radius = .005;
       const life = (Math.random() * 0.75 + 0.25) * 2.0;
       const p = new THREE.Vector3(
           (Math.random() * 2 - 1) * radius,
@@ -81,11 +81,11 @@ export const explode_component = (() => {
       p.copy(d);
       p.multiplyScalar(radius);
       p.add(this.origin_);
-      d.multiplyScalar(25.0);
+      d.multiplyScalar(.250);
 
       return {
           position: p,
-          size: (Math.random() * 0.5 + 0.5) * 5.0,
+          size: (Math.random() * 0.5 + 0.5) * 2.0,
           colour: new THREE.Color(),
           alpha: 0.0,
           life: life,
@@ -109,7 +109,7 @@ export const explode_component = (() => {
       this.particles_ = new particle_system.ParticleSystem({
           camera: params.camera,
           parent: params.scene,
-          texture: './resources/textures/fx/fire.png',
+          texture: './resources/textures/fx/fire.png'.replace('./','/static/'),
       });
       this.timer_ = 10.0;
     }
@@ -124,13 +124,13 @@ export const explode_component = (() => {
       const loader = this.FindEntity('loader').GetComponent('LoadController');
       loader.LoadSound('./resources/sounds/', 'explosion.ogg', (s) => {
         this.group_.add(s);
-        s.setRefDistance(100);
-        s.setMaxDistance(1000);
+        s.setRefDistance(1);
+        s.setMaxDistance(10);
         s.play();  
       });
 
       for (let i = 0; i < 3; ++i) {
-        const r = 4.0;
+        const r = 0.10;
         const p = new THREE.Vector3(
             (Math.random() * 2 - 1) * r,
             (Math.random() * 2 - 1) * r,
@@ -152,7 +152,7 @@ export const explode_component = (() => {
         emitter.sizeSpline_.AddPoint(1.0, 0.5);
         emitter.blend_ = 0.0;
         emitter.delay_ = i * 0.5;
-        emitter.AddParticles(200);
+        emitter.AddParticles(50);
   
         this.particles_.AddEmitter(emitter);
   
@@ -169,7 +169,7 @@ export const explode_component = (() => {
         emitter.sizeSpline_.AddPoint(1.0, 4.0);
         emitter.blend_ = 1.0;
         emitter.delay_ = i * 0.5 + 0.25;
-        emitter.AddParticles(50);
+        emitter.AddParticles(20);
   
         this.particles_.AddEmitter(emitter);
       }
@@ -195,7 +195,7 @@ export const explode_component = (() => {
       this.particles_ = new particle_system.ParticleSystem({
           camera: params.camera,
           parent: params.scene,
-          texture: './resources/textures/fx/fire.png',
+          texture: './resources/textures/fx/fire.png'.replace('./','/static/'),
       });
       this.timer_ = 10.0;
     }
@@ -210,8 +210,8 @@ export const explode_component = (() => {
       const loader = this.FindEntity('loader').GetComponent('LoadController');
       loader.LoadSound('./resources/sounds/', 'explosion.ogg', (s) => {
         this.group_.add(s);
-        s.setRefDistance(10);
-        s.setMaxDistance(5000);
+        s.setRefDistance(0.1);
+        s.setMaxDistance(50);
         s.play();  
       });
 
@@ -231,7 +231,7 @@ export const explode_component = (() => {
       emitter.sizeSpline_.AddPoint(0.5, 3.0);
       emitter.sizeSpline_.AddPoint(1.0, 0.5);
       emitter.blend_ = 0.0;
-      emitter.AddParticles(100);
+      emitter.AddParticles(20);
 
       this.particles_.AddEmitter(emitter);
 
@@ -248,7 +248,7 @@ export const explode_component = (() => {
       emitter.sizeSpline_.AddPoint(1.0, 4.0);
       emitter.blend_ = 1.0;
       emitter.delay_ = 0.25;
-      emitter.AddParticles(50);
+      emitter.AddParticles(10);
 
       this.particles_.AddEmitter(emitter);
     }
