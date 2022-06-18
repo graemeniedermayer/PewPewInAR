@@ -9,3 +9,6 @@ Most of the additions are located in webxr-component.js . As well many of the va
 
 ## Resources
 This was setup to be used in django. Almost all the paths can be changes by altering .replace('./','/static/') with whatever path the server points to.
+
+## Youtube Explainer
+https://www.youtube.com/watch?v=gYciRmOkHTk
