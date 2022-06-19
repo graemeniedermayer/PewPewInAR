@@ -29,7 +29,7 @@ export const ship_effect = (() => {
 
       return {
           position: p,
-          size: (Math.random() * 0.5 + 0.5) * 5.0,
+          size: (Math.random() * 0.5 + 0.5) * 0.5,
           colour: new THREE.Color(),
           alpha: 1.0,
           life: life,
@@ -67,7 +67,7 @@ export const ship_effect = (() => {
     }
 
     OnDamaged_() {
-      const emitter = new SmokeFXEmitter(new THREE.Vector3(0, 0, 5), this.Parent);
+      const emitter = new SmokeFXEmitter(new THREE.Vector3(0, 0, .05), this.Parent);
       emitter.alphaSpline_.AddPoint(0.0, 0.0);
       emitter.alphaSpline_.AddPoint(0.7, 1.0);
       emitter.alphaSpline_.AddPoint(1.0, 0.0);
