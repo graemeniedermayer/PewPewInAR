@@ -5,15 +5,31 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="base.css">
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.skypack.dev/three@0.128/build/three.module.js",
+            "FBXLoader": "https://cdn.skypack.dev/three@0.128/examples/jsm/loaders/FBXLoader.js",
+            "GLTFLoader": "https://cdn.skypack.dev/three@0.128/examples/jsm/loaders/GLTFLoader.js",
+            "SkeletonUtils": "https://cdn.skypack.dev/three@0.128/examples/jsm/utils/SkeletonUtils.js",
+            "OrbitControls": "https://cdn.skypack.dev/three@0.128/examples/jsm/controls/OrbitControls.js"
+        }
+    }
+</script>
 </head>
 <body>
   <div class="container" id="container">
     <div class="ui" id="game-ui">
-      <div class="row">
-        <div class="chat-ui">
-          <div class="chat-ui-text-area" id="chat-ui-text-area">
-            <div class="chat-text fadeOut"></div>
-          </div>
+      <div id='controller'>
+        <div id="movement">
+          <div class="controls" id="up-control"></div>
+          <div class="controls" id="down-control"></div>
+          <div class="controls" id="right-control"></div>
+          <div class="controls" id="left-control"></div>
+        </div>
+        <div id="action">
+          <div class="controls" id="space-control"></div>
+          <div id="shift-control"></div>
         </div>
       </div>
     </div>
